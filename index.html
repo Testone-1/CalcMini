@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>보석 가격 계산기_By 꽃게랑</title>
+  <meta charset="UTF-8">
+  <title>보석 가격 계산기 V2_By 꽃게랑</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -71,7 +70,10 @@
     td {
       padding: 10px;
       border-bottom: 1px solid #e0e0e0;
-      text-align: center;
+    }
+
+    tr:hover td {
+      background-color: #fafafa;
     }
 
     .divider td {
@@ -87,96 +89,19 @@
       font-weight: bold;
       text-align: right;
     }
-
-    /* 모바일 반응형 스타일 */
-    @media (max-width: 600px) {
-      body {
-        padding: 15px;
-        max-width: 100%;
-      }
-
-      .controls {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-        margin-bottom: 15px;
-      }
-
-      label, button {
-        width: 100%;
-        font-size: 18px;
-      }
-
-      input[type="number"] {
-        width: 100%;
-        font-size: 18px;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-
-      button {
-        padding: 12px 0;
-        font-size: 18px;
-        border-radius: 8px;
-      }
-
-      table, thead, tbody, th, td, tr {
-        display: block;
-        width: 100%;
-      }
-
-      thead {
-        display: none; /* 모바일에서는 헤더 숨김 */
-      }
-
-      tr {
-        margin-bottom: 15px;
-        background-color: white;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        padding: 10px 15px;
-      }
-
-      td {
-        border: none;
-        padding: 8px 0;
-        text-align: left;
-        position: relative;
-      }
-
-      td::before {
-        content: attr(data-label);
-        font-weight: 700;
-        display: inline-block;
-        width: 140px;
-        color: #555;
-      }
-
-      /* 가격 열은 오른쪽 정렬 유지 */
-      td.price::before {
-        width: auto;
-      }
-      td.price {
-        text-align: right;
-      }
-
-      .divider td {
-        border: none;
-        background-color: transparent;
-        height: 15px;
-        padding: 0;
-        margin: 15px 0;
-      }
-    }
   </style>
 </head>
 <body>
-  <h1>보석 계산기</h1>
+  <h1>보석 계산기 V2</h1>
+
+<div style="text-align: right; color: #666; font-size: 14px; margin-bottom: 20px;">
+  유보 기준 가격 설정 후 사용하시면 됩니다.
+</div>
 
   <div class="controls">
     <label>
-      기준 가격 (₩):
-      <input type="number" id="basePrice" value="40000" min="0" onchange="calculate()" />
+      유보 기준 가격 (₩):
+      <input type="number" id="basePrice" value="40000" min="0" onchange="calculate()">
     </label>
     <button onclick="resetInputs()">입력 값 초기화</button>
   </div>
@@ -238,10 +163,10 @@
         tr.innerHTML = `<td colspan="4"></td>`;
       } else {
         tr.innerHTML = `
-          <td data-label="아이템 이름">${item.name}</td>
-          <td data-label="배율">${item.multiplier}</td>
-          <td data-label="수량"><input type="number" min="0" value="0" onchange="calculate()" /></td>
-          <td class="price" data-label="아이템 가격 합계 (₩)">0</td>
+          <td>${item.name}</td>
+          <td>${item.multiplier}</td>
+          <td><input type="number" min="0" value="0" onchange="calculate()" /></td>
+          <td class="price">0</td>
         `;
         tr.dataset.multiplier = item.multiplier;
       }
