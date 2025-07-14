@@ -5,39 +5,84 @@
   <title>보석 가격 계산기_By 꽃게랑</title>
   <style>
     body {
-      font-family: sans-serif;
-      padding: 20px;
-      max-width: 800px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      padding: 30px;
+      max-width: 900px;
       margin: auto;
+      color: #333;
     }
+
     h1 {
       text-align: center;
-    }
-    label {
-      display: block;
       margin-bottom: 10px;
+      color: #222;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    label {
       font-weight: bold;
+      font-size: 16px;
     }
+
     input[type="number"] {
-      width: 100px;
-      padding: 4px;
+      padding: 6px;
+      font-size: 15px;
+      width: 120px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
+
+    button {
+      padding: 8px 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      background-color: white;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
+
+    th {
+      background-color: #f0f0f0;
+      padding: 12px;
+      font-weight: 600;
     }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    tr:hover td {
+      background-color: #fafafa;
+    }
+
     .divider td {
-      border-top: 3px double #000;
-      padding: 0;
-      height: 10px;
+      border-top: 3px double #666;
       background-color: #f8f8f8;
+      height: 10px;
+      padding: 0;
     }
+
     .totals {
       margin-top: 20px;
       font-size: 18px;
@@ -49,10 +94,13 @@
 <body>
   <h1>보석 계산기</h1>
 
-  <label>
-    유보 기준 가격 (₩):
-    <input type="number" id="basePrice" value="100" min="0" onchange="calculate()">
-  </label>
+  <div class="controls">
+    <label>
+      기준 가격 (₩):
+      <input type="number" id="basePrice" value="40000" min="0" onchange="calculate()">
+    </label>
+    <button onclick="resetInputs()">입력 값 초기화</button>
+  </div>
 
   <table>
     <thead>
@@ -60,7 +108,7 @@
         <th>아이템 이름</th>
         <th>배율</th>
         <th>수량</th>
-        <th>보석 가격 합계 (₩)</th>
+        <th>가격 합계 (₩)</th>
       </tr>
     </thead>
     <tbody id="itemTable"></tbody>
@@ -102,7 +150,7 @@
 
     const tbody = document.getElementById("itemTable");
 
-    // HTML 테이블 생성
+    // 테이블 행 생성
     items.forEach(item => {
       const tr = document.createElement("tr");
 
@@ -133,7 +181,8 @@
         if (row.classList.contains("divider")) return;
 
         const multiplier = parseFloat(row.dataset.multiplier) || 0;
-        const qty = parseInt(row.cells[2].querySelector("input").value) || 0;
+        const qtyInput = row.cells[2].querySelector("input");
+        const qty = parseInt(qtyInput.value) || 0;
         const points = multiplier * qty;
         const price = points * basePrice;
 
@@ -144,6 +193,17 @@
 
       document.getElementById("totalPoints").textContent = totalPoints.toLocaleString();
       document.getElementById("totalPrice").textContent = totalPrice.toLocaleString();
+    }
+
+    function resetInputs() {
+      document.getElementById("basePrice").value = 100;
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(row => {
+        if (row.classList.contains("divider")) return;
+        const qtyInput = row.cells[2].querySelector("input");
+        qtyInput.value = 0;
+      });
+      calculate();
     }
 
     window.onload = calculate;
