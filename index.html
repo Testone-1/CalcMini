@@ -32,8 +32,11 @@
       padding: 8px;
       text-align: center;
     }
-    .divider {
+    .divider td {
       border-top: 3px double #000;
+      padding: 0;
+      height: 10px;
+      background-color: #f8f8f8;
     }
     .totals {
       margin-top: 20px;
@@ -57,7 +60,7 @@
         <th>아이템 이름</th>
         <th>배율</th>
         <th>수량</th>
-        <th>점수</th>
+        <th>가격 합계 (₩)</th>
       </tr>
     </thead>
     <tbody id="itemTable">
@@ -116,35 +119,33 @@
         <td>${item.name}</td>
         <td>${item.multiplier}</td>
         <td><input type="number" min="0" value="0" onchange="calculate()" /></td>
-        <td class="score">0</td>
+        <td class="price">0</td>
       `;
 
       tbody.appendChild(tr);
     });
 
     function calculate() {
-      let totalPoints = 0;
-      let totalPrice = 0;
-
-      const base = parseFloat(document.getElementById("basePrice").value) || 0;
+      const basePrice = parseFloat(document.getElementById("basePrice").value) || 0;
       const rows = tbody.querySelectorAll("tr");
 
-      let itemIndex = 0;
+      let totalPoints = 0;
+      let totalPrice = 0;
+      let itemCursor = 0;
 
       rows.forEach(row => {
         if (row.classList.contains("divider")) return;
 
-        const multiplier = items[itemIndex].multiplier;
-        const qtyInput = row.cells[2].querySelector("input");
-        const quantity = parseInt(qtyInput.value) || 0;
-        const points = multiplier * quantity;
-        const price = points * base;
+        const item = items[itemCursor++];
+        const multiplier = item.multiplier;
+        const qty = parseInt(row.cells[2].querySelector("input").value) || 0;
 
-        row.cells[3].textContent = points;
-        totalPoints += points;
-        totalPrice += price;
+        const itemPoints = multiplier * qty;
+        const itemTotalPrice = itemPoints * basePrice;
 
-        itemIndex++;
+        row.cells[3].textContent = itemTotalPrice.toLocaleString();
+        totalPoints += itemPoints;
+        totalPrice += itemTotalPrice;
       });
 
       document.getElementById("totalPoints").textContent = totalPoints.toLocaleString();
