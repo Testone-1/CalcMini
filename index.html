@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>보석 계산기_By꽃게랑</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    input[type="number"], input[type="text"] { width: 80px; }
+    .total { font-size: 20px; font-weight: bold; margin-top: 20px; }
+    button { padding: 6px 12px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>보석 계산기</h1>
+  <p>가급적이면 숫자만 입력해서 사용해주세요.</p>
+
+  <label>유보 기준 가격 (₩): 
+    <input type="number" id="basePrice" value="100" min="0" onchange="calculate()">
+  </label>
+
+  <table id="itemTable">
+    <thead>
+      <tr>
+        <th>아이템 이름</th>
+        <th>배율</th>
+        <th>수량</th>
+        <th>합계 (₩)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="text" value="아이템 1"></td>
+        <td><input type="number" value="1" min="0" step="0.1" onchange="calculate()"></td>
+        <td><input type="number" value="0" min="0" onchange="calculate()"></td>
+        <td class="item-total">0</td>
+      </tr>
+      <tr>
+        <td><input type="text" value="아이템 2"></td>
+        <td><input type="number" value="3" min="0" step="0.1" onchange="calculate()"></td>
+        <td><input type="number" value="0" min="0" onchange="calculate()"></td>
+        <td class="item-total">0</td>
+      </tr>
+      <tr>
+        <td><input type="text" value="아이템 3"></td>
+        <td><input type="number" value="9" min="0" step="0.1" onchange="calculate()"></td>
+        <td><input type="number" value="0" min="0" onchange="calculate()"></td>
+        <td class="item-total">0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button onclick="addRow()">아이템 추가</button>
+
+  <div class="total">총 합계: <span id="grandTotal">0</span> ₩</div>
+
+  <script>
+    function calculate() {
+      const base = parseFloat(document.getElementById("basePrice").value) || 0;
+      const rows = document.querySelectorAll("#itemTable tbody tr");
+      let totalSum = 0;
+
+      rows.forEach(row => {
+        const multiplier = parseFloat(row.cells[1].querySelector("input").value) || 0;
+        const qty = parseInt(row.cells[2].querySelector("input").value) || 0;
+        const total = base * multiplier * qty;
+        row.cells[3].textContent = total.toLocaleString();
+        totalSum += total;
+      });
+
+      document.getElementById("grandTotal").textContent = totalSum.toLocaleString();
+    }
+
+    function addRow() {
+      const tbody = document.querySelector("#itemTable tbody");
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td><input type="text" value="새 아이템"></td>
+        <td><input type="number" value="1" min="0" step="0.1" onchange="calculate()"></td>
+        <td><input type="number" value="0" min="0" onchange="calculate()"></td>
+        <td class="item-total">0</td>
+      `;
+
+      tbody.appendChild(tr);
+    }
+
+    window.onload = calculate;
+  </script>
+</body>
+</html>
