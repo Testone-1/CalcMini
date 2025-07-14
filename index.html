@@ -4,25 +4,56 @@
   <meta charset="UTF-8">
   <title>보석 가격 계산기 V2_By 꽃게랑</title>
   <style>
+    :root {
+      --bg-color: #1e1e1e;
+      --text-color: #f0f0f0;
+      --table-bg: #ffffff;
+      --table-text: #000000;
+      --subtitle-color: #cccccc;
+    }
+
+    body.light {
+      --bg-color: #f4f6f8;
+      --text-color: #333;
+      --table-bg: #ffffff;
+      --table-text: #000;
+      --subtitle-color: #666;
+    }
+
     body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
       padding: 30px;
       max-width: 900px;
       margin: auto;
-      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 0;
-      color: #222;
+    }
+
+    .mode-toggle {
+      background-color: transparent;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
     .subtitle {
       text-align: right;
       font-size: 14px;
-      color: #666;
+      color: var(--subtitle-color);
       margin-bottom: 20px;
     }
 
@@ -44,6 +75,8 @@
       width: 120px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      background-color: #fff;
+      color: #000;
     }
 
     button {
@@ -64,8 +97,9 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: white;
+      background-color: var(--table-bg);
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      color: var(--table-text);
     }
 
     th {
@@ -100,12 +134,15 @@
   </style>
 </head>
 <body>
-  <h1>보석 계산기 V2</h1>
+  <div class="header">
+    <h1>보석 계산기 V2</h1>
+    <button class="mode-toggle" onclick="toggleMode()">🌙 다크 모드</button>
+  </div>
   <div class="subtitle">유보 기준 가격은 원하는 대로 설정하면 됩니다.</div>
 
   <div class="controls">
     <label>
-      유보 기준 가격 (₩):
+      기준 가격 (₩):
       <input type="number" id="basePrice" value="40000" min="0" onchange="calculate()">
     </label>
     <button onclick="resetInputs()">입력 값 초기화</button>
@@ -212,6 +249,15 @@
         qtyInput.value = 0;
       });
       calculate();
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      const btn = document.querySelector('.mode-toggle');
+
+      body.classList.toggle("light");
+      const isLight = body.classList.contains("light");
+      btn.textContent = isLight ? "☀️ 라이트 모드" : "🌙 다크 모드";
     }
 
     window.onload = calculate;
