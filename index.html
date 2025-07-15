@@ -131,6 +131,13 @@
       font-weight: bold;
       text-align: right;
     }
+
+    .visitor-counter {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -165,6 +172,13 @@
   </div>
   <div class="totals">
     가격 총합: <span id="totalPrice">0</span> ₩
+  </div>
+
+  <!-- 방문자 수 카운터 (왼쪽 아래 고정) -->
+  <div class="visitor-counter">
+    <a href="https://hits.sh/testone-1.github.io/CalcMini/">
+      <img alt="Hits" src="https://hits.sh/testone-1.github.io/CalcMini.svg?view=today-total&style=plastic&label=%EB%B0%A9%EB%AC%B8%EC%9E%90%20%EC%88%98%3A%20%EC%98%A4%EB%8A%98%2F%EC%A0%84%EC%B2%B4&color=07a6f3&labelColor=353030"/>
+    </a>
   </div>
 
   <script>
